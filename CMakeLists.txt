@@ -19,67 +19,19 @@ endif ()
 #
 #   MPI
 #
-#set(MPI_BASE_DIR "/Users/julie/opt/openmpi/" CACHE PATH "MPI Path")
-#set(MPI_BASE_DIR "/Users/julie/opt/mpich2/" CACHE PATH "MPI Path")
 set(CMAKE_PREFIX_PATH "${MPI_BASE_DIR};${CMAKE_PREFIX_PATH}")
-#set(MPI_COMPILER ${MPI_BASE_DIR}/bin/mpicc)
 
 find_package(MPI)
-if (MPI_FOUND)
-   message(STATUS "Found MPI_LIBRARY : ${MPI_FOUND} ")
-   INCLUDE_DIRECTORIES(${MPI_INCLUDE_PATH})
-
-   find_program(MPI_C_COMPILER
-      NAMES mpicc
-      HINTS "${MPI_BASE_DIR}"
-      PATH_SUFFIXES bin
-      DOC "MPI C compiler.")
-   MARK_AS_ADVANCED(MPI_C_COMPILER)
-   if ("${MPI_C_COMPILER}" STREQUAL "MPI_C_COMPILER-NOTFOUND")
-      message(ERROR "--> MPI C Compiler NOT FOUND (please set MPI_BASE_DIR accordingly")
-   else()
-      message(STATUS "--> MPI C Compiler : ${MPI_C_COMPILER}")
-      SET(CMAKE_C_COMPILER "${MPI_C_COMPILER}")
-      message(STATUS "--> C Compiler : ${CMAKE_C_COMPILER}")
-   endif()
-   find_program(MPI_Fortran_COMPILER
-      NAMES mpif77
-      HINTS "${MPI_BASE_DIR}"
-      PATH_SUFFIXES bin
-      DOC "MPI Fortran compiler.")
-   MARK_AS_ADVANCED(MPI_Fortran_COMPILER)
-   
-   
-
-   if ("${MPI_Fortran_COMPILER}" STREQUAL "MPI_Fortran_COMPILER-NOTFOUND")
-      message(ERROR "--> MPI Fortran Compiler NOT FOUND (please set MPI_BASE_DIR accordingly")
-   else()
-      message(STATUS "--> MPI Fortran Compiler : ${MPI_Fortran_COMPILER}")
-      SET(Fortran_COMPILER "${CMAKE_Fortran_COMPILER}")
-      SET(CMAKE_Fortran_COMPILER "${MPI_Fortran_COMPILER}")
-      message(STATUS "--> Fortran Compiler : ${CMAKE_Fortran_COMPILER}")
-   endif()
-   
-else()
-   message(STATUS "Found MPI_LIBRARY : ${MPI_FOUND} ")
-   set(MPI_BASE_DIR ${MPI_BASE_DIR} CACHE PATH "MPI Path")
-   UNSET(MPIEXEC CACHE)
-   UNSET(MPIEXEC_POSTFLAGS CACHE)
-   UNSET(MPIEXEC_PREFLAGS CACHE)
-   UNSET(MPIEXEC_MAX_NUMPROCS CACHE)
-   UNSET(MPIEXEC_NUMPROC_FLAG CACHE)
-   UNSET(MPI_COMPILE_FLAGS CACHE)
-   UNSET(MPI_LINK_FLAGS CACHE)
-   UNSET(MPI_INCLUDE_PATH CACHE)
-   message(FATAL_ERROR "--> MPI Library NOT FOUND -- please set MPI_BASE_DIR accordingly --")
+if(NOT MPI_C_FOUND)
+  message(FATAL_ERROR "MPI C compiler was not found and is required")
 endif()
-
-
-if (UNIX)
-   if ( "${CMAKE_Fortran_COMPILER}" MATCHES "ifort" )
-  set( CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fltconsistency -fp_port" )
-   endif ()
-endif ()
+if(NOT MPI_Fortran_FOUND)
+  message(FATAL_ERROR "MPI Fortran compiler was not found and is required")
+endif()
+include_directories(${MPI_C_INCLUDE_PATH})
+include_directories(${MPI_Fortran_INCLUDE_PATH})
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${MPI_C_COMPILE_FLAGS}")
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${MPI_Fortran_COMPILE_FLAGS}")
 
 macro(SCALAPACK_install_library lib)
   install(TARGETS ${lib} EXPORT scalapack-targets
@@ -232,14 +184,21 @@ append_subdir_files(src-C "SRC")
 
 if (UNIX)
    add_library(scalapack ${blacs} ${tools} ${tools-C} ${extra_lapack} ${pblas} ${pblas-F} ${ptzblas} ${ptools} ${pbblas} ${redist} ${src} ${src-C})
-   target_link_libraries( scalapack ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES})
+   target_link_libraries( scalapack ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES} ${MPI_C_LIBRARIES} ${MPI_Fortran_LIBRARIES})
+   if(MPI_LINK_FLAGS)
+      set_target_properties(scalapack PROPERTIES LINK_FLAGS ${MPI_LINK_FLAGS})
+   endif()
    scalapack_install_library(scalapack)
 else (UNIX) # Need to separate Fortran and C Code
    OPTION(BUILD_SHARED_LIBS "Build shared libraries" ON )
    add_library(scalapack ${blacs} ${tools-C} ${pblas} ${ptools} ${redist} ${src-C})
-   target_link_libraries( scalapack ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES})
+   target_link_libraries( scalapack ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES} ${MPI_C_LIBRARIES})
    add_library(scalapack-F ${pblas-F} ${pbblas} ${ptzblas} ${tools} ${src} ${extra_lapack} )
-   target_link_libraries( scalapack-F ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES})
+   target_link_libraries( scalapack-F ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES} ${MPI_Fortran_LIBRARIES})
+   if(MPI_LINK_FLAGS)
+      set_target_properties(scalapack PROPERTIES LINK_FLAGS ${MPI_LINK_FLAGS})
+      set_target_properties(scalapack-F PROPERTIES LINK_FLAGS ${MPI_LINK_FLAGS})
+   endif()
    scalapack_install_library(scalapack)
    scalapack_install_library(scalapack-F)
 endif (UNIX)
