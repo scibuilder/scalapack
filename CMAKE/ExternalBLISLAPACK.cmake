@@ -64,7 +64,7 @@ else()
     set(BLIS_ARCH_COMMAND)
   endif()
 
-  # Set up a target for building and installing OpenBLAS
+  # Set up a target for building and installing BLIS+LAPACK
   ExternalProject_Add(project_blis_lapack
     PREFIX ${CMAKE_INSTALL_PREFIX}
     GIT_REPOSITORY ${LAPACK_URL}
@@ -78,7 +78,6 @@ else()
       -D CMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}
       -D CMAKE_C_FLAGS=${CMAKE_C_FLAGS}
       -D CMAKE_Fortran_FLAGS=${CMAKE_Fortran_FLAGS}
-      -D USE_OPTIMIZED_BLAS=ON
       -D BUILD_BLIS=ON ${BLIS_ARCH_COMMAND}
       -D CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
       -D BUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
