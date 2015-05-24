@@ -1,7 +1,7 @@
 #  --------------------------
 #  The communication routines
 #  --------------------------
-set (comm
+set(comm
        igesd2d_.c sgesd2d_.c dgesd2d_.c cgesd2d_.c zgesd2d_.c 	
        itrsd2d_.c strsd2d_.c dtrsd2d_.c ctrsd2d_.c ztrsd2d_.c 
        igerv2d_.c sgerv2d_.c dgerv2d_.c cgerv2d_.c zgerv2d_.c 
@@ -17,7 +17,7 @@ set (comm
 #  --------------------
 #  The support routines
 #  --------------------
-set (supp
+set(supp
        blacs_setup_.c blacs_set_.c blacs_get_.c
        blacs_abort_.c blacs_exit_.c blacs_pnum_.c blacs_pcoord_.c
        ksendid_.c krecvid_.c kbsid_.c kbrid_.c
@@ -28,7 +28,7 @@ set (supp
 #  ---------------------
 #  The internal routines
 #  ---------------------
-set (internal
+set(internal
            BI_HypBS.c BI_HypBR.c BI_IdringBS.c BI_IdringBR.c
            BI_MpathBS.c BI_MpathBR.c BI_SringBS.c BI_SringBR.c
            BI_TreeBS.c BI_TreeBR.c

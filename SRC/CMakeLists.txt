@@ -1,21 +1,21 @@
-set (ALLAUX  pjlaenv.f  pilaenvx.f piparmq.f pilaver.f pmpim2.f pmpcol.f)
-set (ALLAUX-C  pbchkvect.c getpbbuf.c pcrot.c pslaiect.c pdlaiect.c pzrot.c slamov.c clamov.c dlamov.c zlamov.c)
+set(ALLAUX  pjlaenv.f  pilaenvx.f piparmq.f pilaver.f pmpim2.f pmpcol.f)
+set(ALLAUX-C  pbchkvect.c getpbbuf.c pcrot.c pslaiect.c pdlaiect.c pzrot.c slamov.c clamov.c dlamov.c zlamov.c)
 
-set (SCLAUX  
+set(SCLAUX  
    pslabad.f pslaed0.f pslaed1.f pslaed2.f pslaed3.f pslaedz.f 
    pslamch.f pslared1d.f pslasrt.f psstebz.f psstedc.f slapst.f slasrt2.f 
    sstein2.f
    slar1va.f slarrb2.f slarrd2.f slarre2.f slarre2a.f slarrf2.f
    slarrv2.f sstegr2.f sstegr2a.f sstegr2b.f)
 
-set (DZLAUX  
+set(DZLAUX  
    pdlabad.f pdlaed0.f pdlaed1.f pdlaed2.f pdlaed3.f pdlaedz.f 
    pdlamch.f pdlared1d.f pdlasrt.f pdstebz.f pdstedc.f dlapst.f dlasrt2.f 
    dstein2.f
    dlar1va.f dlarrb2.f dlarrd2.f dlarre2.f dlarre2a.f dlarrf2.f
    dlarrv2.f dstegr2.f dstegr2a.f dstegr2b.f)
 
-set (SLASRC  
+set(SLASRC  
    psdbsv.f  psdbtrf.f psdbtrs.f psdbtrsv.f 
    psdtsv.f  psdttrf.f psdttrs.f psdttrsv.f 
    psgbsv.f  psgbtrf.f psgbtrs.f 
@@ -47,7 +47,7 @@ set (SLASRC
    pslamve.f pslaqr0.f pslaqr1.f pslaqr2.f pslaqr3.f pslaqr4.f pslaqr5.f
    psrot.f slaqr6.f)
    
-set (CLASRC  
+set(CLASRC  
    pcdbsv.f  pcdbtrf.f pcdbtrs.f pcdbtrsv.f 
    pcdtsv.f  pcdttrf.f pcdttrs.f pcdttrsv.f 
    pcgbsv.f  pcgbtrf.f pcgbtrs.f 
@@ -78,7 +78,7 @@ set (CLASRC
    cdbtf2.f  cdbtrf.f  cdttrf.f cdttrsv.f  cpttrsv.f csteqr2.f ctrmvt.f 
    clamsh.f  claref.f  clanv2.f clahqr2.f pcheevr.f)
 
-set (DLASRC  
+set(DLASRC  
    pddbsv.f  pddbtrf.f pddbtrs.f pddbtrsv.f 
    pddtsv.f  pddttrf.f pddttrs.f pddttrsv.f 
    pdgbsv.f  pdgbtrf.f pdgbtrs.f 
@@ -110,7 +110,7 @@ set (DLASRC
    pdtrsen.f pdgebal.f pdhseqr.f pdlamve.f pdlaqr0.f pdlaqr1.f pdlaqr2.f
    pdlaqr3.f pdlaqr4.f pdlaqr5.f pdrot.f)
 
-set (ZLASRC  
+set(ZLASRC  
    pzdbsv.f  pzdbtrf.f pzdbtrs.f pzdbtrsv.f 
    pzdtsv.f  pzdttrf.f pzdttrs.f pzdttrsv.f 
    pzgbsv.f  pzgbtrf.f pzgbtrs.f 
