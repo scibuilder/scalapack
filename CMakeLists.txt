@@ -3,6 +3,7 @@ project(SCALAPACK C Fortran)
 
 # Add the CMake directory for custon CMake modules
 set(CMAKE_MODULE_PATH "${SCALAPACK_SOURCE_DIR}/CMAKE" ${CMAKE_MODULE_PATH})
+include(CheckFortranFunctionExists)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
@@ -90,7 +91,6 @@ option(USE_OPTIMIZED_LAPACK_BLAS "Whether or not to search for optimized LAPACK 
 message(STATUS "CHECKING BLAS AND LAPACK LIBRARIES")
 
 if(LAPACK_LIBRARIES)
-  include(CheckFortranFunctionExists)
   message(STATUS "--> LAPACK supplied by user is ${LAPACK_LIBRARIES}.")
   set(CMAKE_REQUIRED_LIBRARIES ${LAPACK_LIBRARIES})
   check_fortran_function_exists("dgesv" LAPACK_FOUND)
