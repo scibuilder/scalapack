@@ -4,6 +4,7 @@ project(SCALAPACK C Fortran)
 # Add the CMake directory for custon CMake modules
 set(CMAKE_MODULE_PATH "${SCALAPACK_SOURCE_DIR}/CMAKE" ${CMAKE_MODULE_PATH})
 include(CheckFortranFunctionExists)
+include(ElCheckFunctionExists)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
