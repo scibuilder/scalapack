@@ -76,7 +76,7 @@ set(CLASRC
    pclattrs.f 
    pcunmr3.f pcunmrz.f pcmax1.f pscsum1.f pclamr1d.f 
    cdbtf2.f  cdbtrf.f  cdttrf.f cdttrsv.f  cpttrsv.f csteqr2.f ctrmvt.f 
-   clamsh.f  claref.f  clanv2.f clahqr2.f pcheevr.f)
+   clamsh.f  claref.f  clanv2.f clahqr2.f pcheevr.f cladiv2.f)
 
 set(DLASRC  
    pddbsv.f  pddbtrf.f pddbtrs.f pddbtrsv.f 
@@ -139,7 +139,7 @@ set(ZLASRC
    pzlarzb.f pzlarzt.f pzlarz.f  pzlarzc.f pzlatrz.f pztzrzf.f 
    pzunmr3.f pzunmrz.f pzmax1.f pdzsum1.f pzlamr1d.f 
    zdbtf2.f  zdbtrf.f  zdttrf.f zdttrsv.f  zpttrsv.f zsteqr2.f ztrmvt.f 
-   zlamsh.f  zlaref.f  zlanv2.f zlahqr2.f pzheevr.f)
+   zlamsh.f  zlaref.f  zlanv2.f zlahqr2.f pzheevr.f zladiv2.f)
    
 set(src 
       ${ALLAUX} ${SCLAUX} ${DZLAUX}

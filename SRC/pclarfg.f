@@ -157,12 +157,11 @@
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_GRIDINFO, CGEBR2D, CGEBS2D, PCSCAL,
-     $                   PCSSCAL, INFOG2L, PSCNRM2
+     $                   PCSSCAL, INFOG2L, PSCNRM2, CLADIV2
 *     ..
 *     .. External Functions ..
       REAL               SLAMCH, SLAPY3
-      COMPLEX            CLADIV
-      EXTERNAL           CLADIV, SLAPY3, SLAMCH
+      EXTERNAL           SLAPY3, SLAMCH
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ABS, AIMAG, CMPLX, REAL, SIGN
@@ -265,7 +264,7 @@
             BETA = -SIGN( SLAPY3( ALPHR, ALPHI, XNORM ), ALPHR )
             TAU( INDXTAU ) = CMPLX( ( BETA-ALPHR ) / BETA,
      $                              -ALPHI / BETA )
-            ALPHA = CLADIV( CMPLX( ONE ), ALPHA-BETA )
+            CALL CLADIV2( CMPLX( ONE ), ALPHA-BETA, ALPHA )
             CALL PCSCAL( N-1, ALPHA, X, IX, JX, DESCX, INCX )
 *
 *           If ALPHA is subnormal, it may lose relative accuracy
@@ -277,7 +276,7 @@
          ELSE
             TAU( INDXTAU ) = CMPLX( ( BETA-ALPHR ) / BETA,
      $                              -ALPHI / BETA )
-            ALPHA = CLADIV( CMPLX( ONE ), ALPHA-BETA )
+            CALL CLADIV2( CMPLX( ONE ), ALPHA-BETA, ALPHA )
             CALL PCSCAL( N-1, ALPHA, X, IX, JX, DESCX, INCX )
             ALPHA = BETA
          END IF

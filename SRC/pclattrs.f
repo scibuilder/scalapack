@@ -278,14 +278,13 @@
       LOGICAL            LSAME
       INTEGER            ISAMAX
       REAL               PSLAMCH
-      COMPLEX            CLADIV
-      EXTERNAL           LSAME, ISAMAX, PSLAMCH, CLADIV
+      EXTERNAL           LSAME, ISAMAX, PSLAMCH
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_GRIDINFO, SGSUM2D, SSCAL, INFOG2L,
      $                   PSCASUM, PSLABAD, PXERBLA, PCAMAX, PCAXPY,
      $                   PCDOTC, PCDOTU, PCSSCAL, PCLASET, PCSCAL,
-     $                   PCTRSV, CGEBR2D, CGEBS2D
+     $                   PCTRSV, CGEBR2D, CGEBS2D, CLADIV2
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ABS, REAL, CMPLX, CONJG, AIMAG, MAX, MIN
@@ -656,7 +655,7 @@
                   END IF
 *                 X( J ) = CLADIV( X( J ), TJJS )
 *                 XJ = CABS1( X( J ) )
-                  XJTMP = CLADIV( XJTMP, TJJS )
+                  CALL CLADIV2( XJTMP, TJJS, XJTMP )
                   XJ = CABS1( XJTMP )
                   IF( ( MYROW.EQ.ITMP1X ) .AND. ( MYCOL.EQ.ITMP2X ) )
      $                 THEN
@@ -686,7 +685,7 @@
                   END IF
 *                 X( J ) = CLADIV( X( J ), TJJS )
 *                 XJ = CABS1( X( J ) )
-                  XJTMP = CLADIV( XJTMP, TJJS )
+                  CALL CLADIV2( XJTMP, TJJS, XJTMP )
                   XJ = CABS1( XJTMP )
                   IF( ( MYROW.EQ.ITMP1X ) .AND. ( MYCOL.EQ.ITMP2X ) )
      $                 THEN
@@ -814,7 +813,7 @@
 *                       Divide by A(j,j) when scaling x if A(j,j) > 1.
 *
                      REC = MIN( ONE, REC*TJJ )
-                     USCAL = CLADIV( USCAL, TJJS )
+                     CALL CLADIV2( USCAL, TJJS, USCAL )
                   END IF
                   IF( REC.LT.ONE ) THEN
                      CALL PCSSCAL( N, REC, X, IX, JX, DESCX, 1 )
@@ -856,7 +855,7 @@
                      CALL PCSCAL( J-1, ZDUM, A, IA, JA+J-1, DESCA, 1 )
                      CALL PCDOTU( J-1, CSUMJ, A, IA, JA+J-1, DESCA, 1,
      $                            X, IX, JX, DESCX, 1 )
-                     ZDUM = CLADIV( ZDUM, USCAL )
+                     CALL CLADIV2( ZDUM, USCAL, ZDUM )
                      CALL PCSCAL( J-1, ZDUM, A, IA, JA+J-1, DESCA, 1 )
                   ELSE IF( J.LT.N ) THEN
 *                    DO 140 I = J + 1, N
@@ -866,7 +865,7 @@
                      CALL PCSCAL( N-J, ZDUM, A, IA+J, JA+J-1, DESCA, 1 )
                      CALL PCDOTU( N-J, CSUMJ, A, IA+J, JA+J-1, DESCA, 1,
      $                            X, IX+J, JX, DESCX, 1 )
-                     ZDUM = CLADIV( ZDUM, USCAL )
+                     CALL CLADIV2( ZDUM, USCAL, ZDUM )
                      CALL PCSCAL( N-J, ZDUM, A, IA+J, JA+J-1, DESCA, 1 )
                   END IF
                   IF( MYCOL.EQ.ITMP2X ) THEN
@@ -928,7 +927,7 @@
                         END IF
                      END IF
 *                    X( J ) = CLADIV( X( J ), TJJS )
-                     XJTMP = CLADIV( XJTMP, TJJS )
+                     CALL CLADIV2( XJTMP, TJJS, XJTMP )
                      IF( ( MYROW.EQ.ITMP1X ) .AND. ( MYCOL.EQ.ITMP2X ) )
      $                    THEN
                         X( IROWX ) = XJTMP
@@ -948,7 +947,7 @@
                         XMAX = XMAX*REC
                      END IF
 *                    X( J ) = CLADIV( X( J ), TJJS )
-                     XJTMP = CLADIV( XJTMP, TJJS )
+                     CALL CLADIV2( XJTMP, TJJS, XJTMP )
                      IF( ( MYROW.EQ.ITMP1X ) .AND. ( MYCOL.EQ.ITMP2X ) )
      $                    THEN
                         X( IROWX ) = XJTMP
@@ -975,7 +974,8 @@
 *                 product has already been divided by 1/A(j,j).
 *
 *                 X( J ) = CLADIV( X( J ), TJJS ) - CSUMJ
-                  XJTMP = CLADIV( XJTMP, TJJS ) - CSUMJ
+                  CALL CLADIV2( XJTMP, TJJS, XJTMP )
+                  XJTMP = XJTMP - CSUMJ
                   IF( ( MYROW.EQ.ITMP1X ) .AND. ( MYCOL.EQ.ITMP2X ) )
      $                 THEN
                      X( IROWX ) = XJTMP
@@ -1033,7 +1033,7 @@
 *                       Divide by A(j,j) when scaling x if A(j,j) > 1.
 *
                      REC = MIN( ONE, REC*TJJ )
-                     USCAL = CLADIV( USCAL, TJJS )
+                     CALL CLADIV2( USCAL, TJJS, USCAL )
                   END IF
                   IF( REC.LT.ONE ) THEN
                      CALL PCSSCAL( N, REC, X, IX, JX, DESCX, 1 )
@@ -1076,7 +1076,7 @@
                      CALL PCSCAL( J-1, ZDUM, A, IA, JA+J-1, DESCA, 1 )
                      CALL PCDOTC( J-1, CSUMJ, A, IA, JA+J-1, DESCA, 1,
      $                            X, IX, JX, DESCX, 1 )
-                     ZDUM = CLADIV( CONE, ZDUM )
+                     CALL CLADIV2( CONE, ZDUM, ZDUM )
                      CALL PCSCAL( J-1, ZDUM, A, IA, JA+J-1, DESCA, 1 )
                   ELSE IF( J.LT.N ) THEN
 *                    DO 190 I = J + 1, N
@@ -1087,7 +1087,7 @@
                      CALL PCSCAL( N-J, ZDUM, A, IA+J, JA+J-1, DESCA, 1 )
                      CALL PCDOTC( N-J, CSUMJ, A, IA+J, JA+J-1, DESCA, 1,
      $                            X, IX+J, JX, DESCX, 1 )
-                     ZDUM = CLADIV( CONE, ZDUM )
+                     CALL CLADIV2( CONE, ZDUM, ZDUM )
                      CALL PCSCAL( N-J, ZDUM, A, IA+J, JA+J-1, DESCA, 1 )
                   END IF
                   IF( MYCOL.EQ.ITMP2X ) THEN
@@ -1149,7 +1149,7 @@
                         END IF
                      END IF
 *                    X( J ) = CLADIV( X( J ), TJJS )
-                     XJTMP = CLADIV( XJTMP, TJJS )
+                     CALL CLADIV2( XJTMP, TJJS, XJTMP )
                      IF( ( MYROW.EQ.ITMP1X ) .AND. ( MYCOL.EQ.ITMP2X ) )
      $                  X( IROWX ) = XJTMP
                   ELSE IF( TJJ.GT.ZERO ) THEN
@@ -1167,7 +1167,7 @@
                         XMAX = XMAX*REC
                      END IF
 *                    X( J ) = CLADIV( X( J ), TJJS )
-                     XJTMP = CLADIV( XJTMP, TJJS )
+                     CALL CLADIV2( XJTMP, TJJS, XJTMP )
                      IF( ( MYROW.EQ.ITMP1X ) .AND. ( MYCOL.EQ.ITMP2X ) )
      $                  X( IROWX ) = XJTMP
                   ELSE
@@ -1190,7 +1190,8 @@
 *                 product has already been divided by 1/A(j,j).
 *
 *                 X( J ) = CLADIV( X( J ), TJJS ) - CSUMJ
-                  XJTMP = CLADIV( XJTMP, TJJS ) - CSUMJ
+                  CALL CLADIV2( XJTMP, TJJS, XJTMP )
+                  XJTMP = XJTMP - CSUMJ
                   IF( ( MYROW.EQ.ITMP1X ) .AND. ( MYCOL.EQ.ITMP2X ) )
      $               X( IROWX ) = XJTMP
                END IF

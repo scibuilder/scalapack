@@ -158,12 +158,11 @@
 *     .. External Subroutines ..
       EXTERNAL           BLACS_GRIDINFO, INFOG2L, PDZNRM2,
      $                   ZGEBR2D, ZGEBS2D, PZSCAL,
-     $                   PZDSCAL
+     $                   PZDSCAL, ZLADIV2
 *     ..
 *     .. External Functions ..
       DOUBLE PRECISION   DLAMCH, DLAPY3
-      COMPLEX*16         ZLADIV
-      EXTERNAL           DLAMCH, DLAPY3, ZLADIV
+      EXTERNAL           DLAMCH, DLAPY3
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ABS, DBLE, DCMPLX, DIMAG, SIGN
@@ -266,7 +265,7 @@
             BETA = -SIGN( DLAPY3( ALPHR, ALPHI, XNORM ), ALPHR )
             TAU( INDXTAU ) = DCMPLX( ( BETA-ALPHR ) / BETA,
      $                                 -ALPHI / BETA )
-            ALPHA = ZLADIV( DCMPLX( ONE ), ALPHA-BETA )
+            CALL ZLADIV2( DCMPLEX( ONE ), ALPHA-BETA, ALPHA )
             CALL PZSCAL( N-1, ALPHA, X, IX, JX, DESCX, INCX )
 *
 *           If ALPHA is subnormal, it may lose relative accuracy
@@ -278,7 +277,7 @@
          ELSE
             TAU( INDXTAU ) = DCMPLX( ( BETA-ALPHR ) / BETA,
      $                               -ALPHI / BETA )
-            ALPHA = ZLADIV( DCMPLX( ONE ), ALPHA-BETA )
+            CALL ZLADIV2( DCMPLX( ONE ), ALPHA-BETA, ALPHA )
             CALL PZSCAL( N-1, ALPHA, X, IX, JX, DESCX, INCX )
             ALPHA = BETA
          END IF

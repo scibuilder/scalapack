@@ -56,12 +56,8 @@
 *     .. Local Scalars ..
       COMPLEX*16         AA, BB, DD, T, TEMP, TEMP2, U, X, Y
 *     ..
-*     .. External Functions ..
-      COMPLEX*16         ZLADIV
-      EXTERNAL           ZLADIV
-*     ..
 *     .. External Subroutines ..
-      EXTERNAL           ZLARTG
+      EXTERNAL           ZLARTG, ZLADIV2
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          DBLE, DCMPLX, DCONJG, DIMAG, SQRT
@@ -97,9 +93,9 @@
             SN = DCMPLX( RZERO, RONE )*CS
          ELSE
             TEMP = SQRT( B+C )
-            TEMP2 = ZLADIV( SQRT( B ), TEMP )
+            CALL ZLADIV2( SQRT( B ), TEMP, TEMP2 )
             CS = DBLE( TEMP2 )
-            SN = ZLADIV( SQRT( C ), TEMP )
+            CALL ZLADIV2( SQRT( C ), TEMP, SN )
          END IF
          B = B - C
          C = ZERO
@@ -114,7 +110,8 @@
          Y = SQRT( X*X+U )
          IF( DBLE( X )*DBLE( Y )+DIMAG( X )*DIMAG( Y ).LT.RZERO )
      $      Y = -Y
-         T = T - ZLADIV( U, ( X+Y ) )
+         CALL ZLADIV2( U, ( X+Y ), TEMP )
+         T = T - TEMP
 *
 *        Do one QR step with exact shift T - resulting 2 x 2 in
 *        triangular form.
