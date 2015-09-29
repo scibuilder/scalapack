@@ -265,7 +265,7 @@
             BETA = -SIGN( DLAPY3( ALPHR, ALPHI, XNORM ), ALPHR )
             TAU( INDXTAU ) = DCMPLX( ( BETA-ALPHR ) / BETA,
      $                                 -ALPHI / BETA )
-            CALL ZLADIV2( DCMPLEX( ONE ), ALPHA-BETA, ALPHA )
+            CALL ZLADIV2( DCMPLX( ONE ), ALPHA-BETA, ALPHA )
             CALL PZSCAL( N-1, ALPHA, X, IX, JX, DESCX, INCX )
 *
 *           If ALPHA is subnormal, it may lose relative accuracy
