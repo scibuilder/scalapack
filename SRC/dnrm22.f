@@ -52,7 +52,7 @@
 *> \endverbatim
 *>
 *  =====================================================================
-      SUBROUTINE DNRM2(N,X,INCX,ALPHA)
+      SUBROUTINE DNRM22(N,X,INCX,ALPHA)
 *
 *  -- Reference BLAS level1 routine (version 3.4.0) --
 *  -- Reference BLAS is a software package provided by Univ. of Tennessee,    --
