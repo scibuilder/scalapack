@@ -450,12 +450,12 @@
 *
       LOGICAL            LSAME
       INTEGER            ICEIL, NUMROC, PJLAENV
-      REAL               PSLAMCH, SCNRM2
-      EXTERNAL           LSAME, ICEIL, NUMROC, PJLAENV, PSLAMCH, SCNRM2
+      REAL               PSLAMCH
+      EXTERNAL           LSAME, ICEIL, NUMROC, PJLAENV, PSLAMCH
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          AIMAG, CMPLX, CONJG, ICHAR, MAX, MIN, MOD,
-     $                   REAL, SIGN, SQRT
+     $                   REAL, SIGN, SQRT, SCNRM22
 *     ..
 *
 *
@@ -782,7 +782,7 @@
                   DTMP( 4 ) = ZERO
                END IF
 *
-               NORM = SCNRM2( NPM1, A( LIIP1+( LIJ-1 )*LDA ), 1 )
+               CALL SCNRM22( NPM1, A(LIIP1+(LIJ-1)*LDA), 1, NORM )
                DTMP( 1 ) = NORM
 *
 *              IF DTMP(5) = 1.0, NORM is too large and might cause

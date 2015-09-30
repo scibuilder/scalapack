@@ -45,7 +45,7 @@ set(SLASRC
    sdbtf2.f  sdbtrf.f  sdttrf.f sdttrsv.f spttrsv.f strmvt.f pssyevr.f
    bslaapp.f bslaexc.f bstrexc.f pstrord.f pstrsen.f psgebal.f pshseqr.f
    pslamve.f pslaqr0.f pslaqr1.f pslaqr2.f pslaqr3.f pslaqr4.f pslaqr5.f
-   psrot.f slaqr6.f sdot2.f)
+   psrot.f slaqr6.f sdot2.f snrm22.f)
    
 set(CLASRC  
    pcdbsv.f  pcdbtrf.f pcdbtrs.f pcdbtrsv.f 
@@ -76,7 +76,8 @@ set(CLASRC
    pclattrs.f 
    pcunmr3.f pcunmrz.f pcmax1.f pscsum1.f pclamr1d.f 
    cdbtf2.f  cdbtrf.f  cdttrf.f cdttrsv.f  cpttrsv.f csteqr2.f ctrmvt.f 
-   clamsh.f  claref.f  clanv2.f clahqr2.f pcheevr.f cladiv2.f cdotc2.f cdotu2.f)
+   clamsh.f  claref.f  clanv2.f clahqr2.f pcheevr.f cladiv2.f cdotc2.f cdotu2.f
+   scnrm22.f)
 
 set(DLASRC  
    pddbsv.f  pddbtrf.f pddbtrs.f pddbtrsv.f 
@@ -108,7 +109,7 @@ set(DLASRC
    ddbtf2.f  ddbtrf.f  ddttrf.f ddttrsv.f dpttrsv.f dtrmvt.f  pdsyevr.f
    bdlaapp.f bdlaexc.f bdtrexc.f dlaqr6.f pdtrord.f
    pdtrsen.f pdgebal.f pdhseqr.f pdlamve.f pdlaqr0.f pdlaqr1.f pdlaqr2.f
-   pdlaqr3.f pdlaqr4.f pdlaqr5.f pdrot.f ddot2.f)
+   pdlaqr3.f pdlaqr4.f pdlaqr5.f pdrot.f ddot2.f dnrm22.f)
 
 set(ZLASRC  
    pzdbsv.f  pzdbtrf.f pzdbtrs.f pzdbtrsv.f 
@@ -139,7 +140,8 @@ set(ZLASRC
    pzlarzb.f pzlarzt.f pzlarz.f  pzlarzc.f pzlatrz.f pztzrzf.f 
    pzunmr3.f pzunmrz.f pzmax1.f pdzsum1.f pzlamr1d.f 
    zdbtf2.f  zdbtrf.f  zdttrf.f zdttrsv.f  zpttrsv.f zsteqr2.f ztrmvt.f 
-   zlamsh.f  zlaref.f  zlanv2.f zlahqr2.f pzheevr.f zladiv2.f zdotc2.f zdotu2.f)
+   zlamsh.f  zlaref.f  zlanv2.f zlahqr2.f pzheevr.f zladiv2.f zdotc2.f zdotu2.f
+   dznrm22.f)
    
 set(src 
       ${ALLAUX} ${SCLAUX} ${DZLAUX}

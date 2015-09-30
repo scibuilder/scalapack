@@ -128,12 +128,12 @@
 *     ..
 *     .. External Functions ..
       INTEGER            ISAMAX
-      REAL               SASUM, SLAMCH, SNRM2
-      EXTERNAL           ISAMAX, SASUM, SLAMCH, SNRM2
+      REAL               SASUM, SLAMCH
+      EXTERNAL           ISAMAX, SASUM, SLAMCH
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           SAXPY, SCOPY, SLAGTF, SLAGTS, SLARNV, SSCAL,
-     $                   XERBLA, SDOT2
+     $                   XERBLA, SDOT2, SNRM22
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ABS, MAX, SQRT
@@ -347,7 +347,8 @@
 *           Accept iterate as jth eigenvector.
 *
   110       CONTINUE
-            SCL = ONE / SNRM2( BLKSIZ, WORK( INDRV1+1 ), 1 )
+            CALL SNRM22( BLKSIZ, WORK(INDRV1+1), 1, SCL )
+            SCL = ONE / SCL
             JMAX = ISAMAX( BLKSIZ, WORK( INDRV1+1 ), 1 )
             IF( WORK( INDRV1+JMAX ).LT.ZERO )
      $         SCL = -SCL

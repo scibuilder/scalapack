@@ -442,14 +442,14 @@
       EXTERNAL           BLACS_GRIDINFO, CHK1MAT, DCOMBNRM2, DGEBR2D,
      $                   DGEBS2D, DGEMM, DGEMV, DGERV2D, DGESD2D,
      $                   DGSUM2D, DLAMOV, DSCAL, DTRMVT, PCHK1MAT,
-     $                   PDTREECOMB, PXERBLA
+     $                   PDTREECOMB, PXERBLA, DNRM22
 *     ..
 *     .. External Functions ..
 *
       LOGICAL            LSAME
       INTEGER            ICEIL, NUMROC, PJLAENV
-      DOUBLE PRECISION   DNRM2, PDLAMCH
-      EXTERNAL           LSAME, ICEIL, NUMROC, PJLAENV, DNRM2, PDLAMCH
+      DOUBLE PRECISION   PDLAMCH
+      EXTERNAL           LSAME, ICEIL, NUMROC, PJLAENV, PDLAMCH
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          DBLE, ICHAR, MAX, MIN, MOD, SIGN, SQRT
@@ -779,7 +779,7 @@
                   DTMP( 4 ) = ZERO
                END IF
 *
-               NORM = DNRM2( NPM1, A( LIIP1+( LIJ-1 )*LDA ), 1 )
+               CALL DNRM22( NPM1, A(LIIP1+(LIJ-1)*LDA), 1, NORM )
                DTMP( 1 ) = NORM
 *
 *              IF DTMP(5) = 1.0, NORM is too large and might cause

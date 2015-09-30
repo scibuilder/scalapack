@@ -441,14 +441,14 @@
       EXTERNAL           BLACS_GRIDINFO, CHK1MAT, PCHK1MAT, PSTREECOMB,
      $                   PXERBLA, SCOMBNRM2, SGEBR2D, SGEBS2D, SGEMM,
      $                   SGEMV, SGERV2D, SGESD2D, SGSUM2D, SLAMOV,
-     $                   SSCAL, STRMVT
+     $                   SSCAL, STRMVT, SNRM22
 *     ..
 *     .. External Functions ..
 *
       LOGICAL            LSAME
       INTEGER            ICEIL, NUMROC, PJLAENV
-      REAL               PSLAMCH, SNRM2
-      EXTERNAL           LSAME, ICEIL, NUMROC, PJLAENV, PSLAMCH, SNRM2
+      REAL               PSLAMCH
+      EXTERNAL           LSAME, ICEIL, NUMROC, PJLAENV, PSLAMCH
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ICHAR, MAX, MIN, MOD, REAL, SIGN, SQRT
@@ -778,7 +778,7 @@
                   DTMP( 4 ) = ZERO
                END IF
 *
-               NORM = SNRM2( NPM1, A( LIIP1+( LIJ-1 )*LDA ), 1 )
+               CALL SNRM22( NPM1, A(LIIP1+(LIJ-1)*LDA), 1, NORM )
                DTMP( 1 ) = NORM
 *
 *              IF DTMP(5) = 1.0, NORM is too large and might cause

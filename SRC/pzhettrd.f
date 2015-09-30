@@ -445,14 +445,14 @@
      $                   DGEBS2D, DGSUM2D, PCHK1MAT, PDTREECOMB,
      $                   PXERBLA, ZGEBR2D, ZGEBS2D, ZGEMM, ZGEMV,
      $                   ZGERV2D, ZGESD2D, ZGSUM2D, ZLAMOV, ZSCAL,
-     $                   ZTRMVT
+     $                   ZTRMVT, DZNRM22
 *     ..
 *     .. External Functions ..
 *
       LOGICAL            LSAME
       INTEGER            ICEIL, NUMROC, PJLAENV
-      DOUBLE PRECISION   DZNRM2, PDLAMCH
-      EXTERNAL           LSAME, ICEIL, NUMROC, PJLAENV, DZNRM2, PDLAMCH
+      DOUBLE PRECISION   PDLAMCH
+      EXTERNAL           LSAME, ICEIL, NUMROC, PJLAENV, PDLAMCH
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          DBLE, DCMPLX, DCONJG, DIMAG, ICHAR, MAX, MIN,
@@ -783,7 +783,7 @@
                   DTMP( 4 ) = ZERO
                END IF
 *
-               NORM = DZNRM2( NPM1, A( LIIP1+( LIJ-1 )*LDA ), 1 )
+               CALL DZNRM22( NPM1, A(LIIP1+(LIJ-1)*LDA), 1, NORM )
                DTMP( 1 ) = NORM
 *
 *              IF DTMP(5) = 1.0, NORM is too large and might cause

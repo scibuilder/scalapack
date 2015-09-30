@@ -128,12 +128,12 @@
 *     ..
 *     .. External Functions ..
       INTEGER            IDAMAX
-      DOUBLE PRECISION   DASUM, DLAMCH, DNRM2
-      EXTERNAL           IDAMAX, DASUM, DLAMCH, DNRM2
+      DOUBLE PRECISION   DASUM, DLAMCH
+      EXTERNAL           IDAMAX, DASUM, DLAMCH
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           DAXPY, DCOPY, DLAGTF, DLAGTS, DLARNV, DSCAL,
-     $                   XERBLA, DDOT2
+     $                   XERBLA, DDOT2, DNRM22
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ABS, MAX, SQRT
@@ -347,7 +347,8 @@
 *           Accept iterate as jth eigenvector.
 *
   110       CONTINUE
-            SCL = ONE / DNRM2( BLKSIZ, WORK( INDRV1+1 ), 1 )
+            CALL DNRM22( BLKSIZ, WORK(INDRV1+1), 1, SCL )
+            SCL = ONE / SCL
             JMAX = IDAMAX( BLKSIZ, WORK( INDRV1+1 ), 1 )
             IF( WORK( INDRV1+JMAX ).LT.ZERO )
      $         SCL = -SCL

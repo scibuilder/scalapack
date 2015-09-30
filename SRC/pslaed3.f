@@ -147,12 +147,12 @@
 *     ..
 *     .. External Functions ..
       INTEGER            INDXG2L
-      REAL               SLAMC3, SNRM2
-      EXTERNAL           INDXG2L, SLAMC3, SNRM2
+      REAL               SLAMC3
+      EXTERNAL           INDXG2L, SLAMC3
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_GRIDINFO, SCOPY, SGEBR2D, SGEBS2D,
-     $                   SGERV2D, SGESD2D, SLAED4
+     $                   SGERV2D, SGESD2D, SLAED4, SNRM22
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MOD, SIGN, SQRT
@@ -338,7 +338,7 @@
             DO 160 I = 1, K
                BUF( I ) = Z( I ) / BUF( I )
   160       CONTINUE
-            TEMP = SNRM2( K, BUF, 1 )
+            CALL SNRM22( K, BUF, 1, TEMP )
             DO 170 I = 1, KLR
                KK = INDXR( I )
                IU = INDX( KK )

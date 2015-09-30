@@ -147,12 +147,12 @@
 *     ..
 *     .. External Functions ..
       INTEGER            INDXG2L
-      DOUBLE PRECISION   DLAMC3, DNRM2
-      EXTERNAL           INDXG2L, DLAMC3, DNRM2
+      DOUBLE PRECISION   DLAMC3
+      EXTERNAL           INDXG2L, DLAMC3
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_GRIDINFO, DCOPY, DGEBR2D, DGEBS2D,
-     $                   DGERV2D, DGESD2D, DLAED4
+     $                   DGERV2D, DGESD2D, DLAED4, DNRM22
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MOD, SIGN, SQRT
@@ -340,7 +340,7 @@
             DO 160 I = 1, K
                BUF( I ) = Z( I ) / BUF( I )
   160       CONTINUE
-            TEMP = DNRM2( K, BUF, 1 )
+            CALL DNRM22( K, BUF, 1, TEMP )
             DO 170 I = 1, KLR
                KK = INDXR( I )
                IU = INDX( KK )
