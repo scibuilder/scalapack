@@ -187,11 +187,11 @@
 *     ..
 *     .. External Functions ..
       INTEGER            NUMROC
-      REAL               SLANGE, PSLAMCH, PSLANGE
-      EXTERNAL           NUMROC, SLANGE, PSLAMCH, PSLANGE
+      REAL               PSLAMCH, PSLANGE
+      EXTERNAL           NUMROC, PSLAMCH, PSLANGE
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           BLACS_GRIDINFO, CHK1MAT, PXERBLA
+      EXTERNAL           BLACS_GRIDINFO, CHK1MAT, PXERBLA, SLANGE2
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX, MIN
@@ -246,12 +246,12 @@
 *
 *     Make comparison of singular values.
 *
-      NORMS = SLANGE( '1', SIZE, 1, S, SIZE, WORK )
+      CALL SLANGE2( '1', SIZE, 1, S, SIZE, WORK, NORMS )
       DO 10 I = 1, SIZE
          SC( I ) = S( I ) - SC( I )
    10 CONTINUE
 *
-      NORMDIFS = SLANGE( '1', SIZE, 1, SC, SIZE, WORK )
+      CALL SLANGE2( '1', SIZE, 1, SC, SIZE, WORK, NORMDIFS )
       ACCUR = ULP*SIZE*NORMS*THRESH
 *
       IF( NORMDIFS.GT.ACCUR )

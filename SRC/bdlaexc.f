@@ -96,12 +96,12 @@
       DOUBLE PRECISION   D( LDD, 4 ), X( LDX, 2 )
 *     ..
 *     .. External Functions ..
-      DOUBLE PRECISION   DLAMCH, DLANGE
-      EXTERNAL           DLAMCH, DLANGE
+      DOUBLE PRECISION   DLAMCH
+      EXTERNAL           DLAMCH
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           DLAMOV, DLANV2, DLARFG, DLARFX, DLARTG, DLASY2,
-     $                   DROT
+     $                   DROT, DLANGE2
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ABS, MAX
@@ -155,7 +155,7 @@
 *
          ND = N1 + N2
          CALL DLAMOV( 'Full', ND, ND, T( J1, J1 ), LDT, D, LDD )
-         DNORM = DLANGE( 'Max', ND, ND, D, LDD, WORK )
+         CALL DLANGE2( 'Max', ND, ND, D, LDD, WORK, DNORM )
 *
 *        Compute machine-dependent threshold for test for accepting
 *        swap.

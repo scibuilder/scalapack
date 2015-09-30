@@ -165,9 +165,9 @@
 *     .. External Functions ..
       LOGICAL            LSAME
       INTEGER            PILAENVX, ICEIL, INDXG2P, INDXG2L, NUMROC
-      DOUBLE PRECISION   DLAMCH, DLANGE
+      DOUBLE PRECISION   DLAMCH
       EXTERNAL           DLAMCH, PILAENVX, ICEIL, INDXG2P, INDXG2L,
-     $                   NUMROC, LSAME, DLANGE
+     $                   NUMROC, LSAME
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ABS, DBLE, MAX, MIN, MOD

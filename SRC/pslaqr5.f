@@ -165,9 +165,9 @@
 *     .. External Functions ..
       LOGICAL            LSAME
       INTEGER            PILAENVX, ICEIL, INDXG2P, INDXG2L, NUMROC
-      REAL               SLAMCH, SLANGE
+      REAL               SLAMCH
       EXTERNAL           SLAMCH, PILAENVX, ICEIL, INDXG2P, INDXG2L,
-     $                   NUMROC, LSAME, SLANGE
+     $                   NUMROC, LSAME
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ABS, FLOAT, MAX, MIN, MOD

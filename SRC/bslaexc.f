@@ -96,12 +96,12 @@
       REAL               D( LDD, 4 ), X( LDX, 2 )
 *     ..
 *     .. External Functions ..
-      REAL               SLAMCH, SLANGE
-      EXTERNAL           SLAMCH, SLANGE
+      REAL               SLAMCH
+      EXTERNAL           SLAMCH
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           SLAMOV, SLANV2, SLARFG, SLARFX, SLARTG, SLASY2,
-     $                   SROT
+     $                   SROT, SLANGE2
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ABS, MAX
@@ -155,7 +155,7 @@
 *
          ND = N1 + N2
          CALL SLAMOV( 'Full', ND, ND, T( J1, J1 ), LDT, D, LDD )
-         DNORM = SLANGE( 'Max', ND, ND, D, LDD, WORK )
+         CALL SLANGE2( 'Max', ND, ND, D, LDD, WORK, DNORM )
 *
 *        Compute machine-dependent threshold for test for accepting
 *        swap.

@@ -187,11 +187,11 @@
 *     ..
 *     .. External Functions ..
       INTEGER            NUMROC
-      DOUBLE PRECISION   DLANGE, PDLAMCH, PDLANGE
-      EXTERNAL           NUMROC, DLANGE, PDLAMCH, PDLANGE
+      DOUBLE PRECISION   PDLAMCH, PDLANGE
+      EXTERNAL           NUMROC, PDLAMCH, PDLANGE
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           BLACS_GRIDINFO, CHK1MAT, PXERBLA
+      EXTERNAL           BLACS_GRIDINFO, CHK1MAT, PXERBLA, DLANGE2
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX, MIN
@@ -246,12 +246,12 @@
 *
 *     Make comparison of singular values.
 *
-      NORMS = DLANGE( '1', SIZE, 1, S, SIZE, WORK )
+      CALL DLANGE2( '1', SIZE, 1, S, SIZE, WORK, NORMS )
       DO 10 I = 1, SIZE
          SC( I ) = S( I ) - SC( I )
    10 CONTINUE
 *
-      NORMDIFS = DLANGE( '1', SIZE, 1, SC, SIZE, WORK )
+      CALL DLANGE2( '1', SIZE, 1, SC, SIZE, WORK, NORMDIFS )
       ACCUR = ULP*SIZE*NORMS*THRESH
 *
       IF( NORMDIFS.GT.ACCUR )
