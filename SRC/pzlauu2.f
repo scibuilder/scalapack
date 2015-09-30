@@ -131,15 +131,15 @@
       INTEGER            IACOL, IAROW, ICURR, IDIAG, IIA, IOFFA, JJA,
      $                   LDA, MYCOL, MYROW, NA, NPCOL, NPROW
       DOUBLE PRECISION   AII
+      COMPLEX*16         TEMP
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_GRIDINFO, INFOG2L, ZDSCAL, ZGEMV,
-     $                   ZLACGV
+     $                   ZLACGV, ZDOTC2
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
-      COMPLEX*16         ZDOTC
-      EXTERNAL           LSAME, ZDOTC
+      EXTERNAL           LSAME
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          DCMPLX, DBLE
@@ -170,8 +170,8 @@
             DO 10 NA = N-1, 1, -1
                AII = A( IDIAG )
                ICURR = IDIAG + LDA
-               A( IDIAG ) = AII*AII + DBLE( ZDOTC( NA, A( ICURR ), LDA,
-     $                                           A( ICURR ), LDA ) )
+               CALL ZDOTC2(NA, A(ICURR), LDA, A(ICURR), LDA, TEMP) 
+               A( IDIAG ) = AII*AII + DBLE( TEMP )
                CALL ZLACGV( NA, A( ICURR ), LDA )
                CALL ZGEMV( 'No transpose', N-NA-1, NA, ONE,
      $                     A( IOFFA+LDA ), LDA, A( ICURR ), LDA,
@@ -190,8 +190,8 @@
             DO 20 NA = 1, N-1
                AII = A( IDIAG )
                ICURR = IDIAG + 1
-               A( IDIAG ) = AII*AII + DBLE( ZDOTC( N-NA, A( ICURR ), 1,
-     $                                             A( ICURR ), 1 ) )
+               CALL ZDOTC2(N-NA, A(ICURR), 1, A(ICURR), 1, TEMP)
+               A( IDIAG ) = AII*AII + DBLE( TEMP )
                CALL ZLACGV( NA-1, A( IOFFA ), LDA )
                CALL ZGEMV( 'Conjugate transpose', N-NA, NA-1, ONE,
      $                     A( IOFFA+1 ), LDA, A( ICURR ), 1,

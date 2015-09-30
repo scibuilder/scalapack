@@ -373,6 +373,7 @@
      $                   NB, NP, NPCOL, NPROW, NP_SAVE, ODD_SIZE,
      $                   PART_OFFSET, PART_SIZE, RETURN_CODE, STORE_N_A,
      $                   TEMP, WORK_SIZE_MIN, WORK_U
+      DOUBLE PRECISION   DOT_TEMP
 *     ..
 *     .. Local Arrays ..
       INTEGER            DESCA_1XP( 7 ), PARAM_CHECK( 7, 3 )
@@ -381,12 +382,11 @@
       EXTERNAL           BLACS_GRIDEXIT, BLACS_GRIDINFO, DDTTRF,
      $                   DDTTRSV, DESC_CONVERT, DGERV2D, DGESD2D,
      $                   DTRRV2D, DTRSD2D, GLOBCHK, IGAMX2D, IGEBR2D,
-     $                   IGEBS2D, PXERBLA, RESHAPE
+     $                   IGEBS2D, PXERBLA, RESHAPE, DDOT2
 *     ..
 *     .. External Functions ..
       INTEGER            NUMROC
-      DOUBLE PRECISION   DDOT
-      EXTERNAL           NUMROC, DDOT
+      EXTERNAL           NUMROC
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          DBLE, MOD
@@ -727,8 +727,8 @@
 *
 *         Calculate the update block for previous proc, E_i = GL_i{GU_i}
 *
-            AF( ODD_SIZE+3 ) = -ONE*DDOT( ODD_SIZE, AF( 1 ), 1,
-     $                         AF( WORK_U+1 ), 1 )
+            CALL DDOT2(ODD_SIZE, AF(1), 1, AF(WORK_U+1), 1, DOT_TEMP)
+            AF(ODD_SIZE+3) = -ONE*DOT_TEMP
 *
 *
 *         Initiate send of E_i to previous processor to overlap

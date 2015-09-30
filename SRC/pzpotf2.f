@@ -152,19 +152,19 @@
      $                   IOFFA, IROFF, J, JJA, LDA, MYCOL, MYROW,
      $                   NPCOL, NPROW
       DOUBLE PRECISION   AJJ
+      COMPLEX*16         TEMP
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_ABORT, BLACS_GRIDINFO, CHK1MAT, IGEBR2D,
      $                   IGEBS2D, INFOG2L, PB_TOPGET, PXERBLA, ZGEMV,
-     $                   ZLACGV, ZDSCAL
+     $                   ZLACGV, ZDSCAL, ZDOTC2
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          DBLE, MOD, SQRT
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
-      COMPLEX*16         ZDOTC
-      EXTERNAL           LSAME, ZDOTC
+      EXTERNAL           LSAME
 *     ..
 *     .. Executable Statements ..
 *
@@ -233,8 +233,8 @@
 *
 *                 Compute U(J,J) and test for non-positive-definiteness.
 *
-                  AJJ = DBLE( A( IDIAG ) ) -
-     $                  ZDOTC( J-JA, A( IOFFA ), 1, A( IOFFA ), 1 )
+                  CALL ZDOTC2(J-JA, A(IOFFA), 1, A(IOFFA), 1, TEMP)
+                  AJJ = DBLE( A( IDIAG ) ) - TEMP
                   IF( AJJ.LE.ZERO ) THEN
                      A( IDIAG ) = AJJ
                      INFO = J - JA + 1
@@ -299,8 +299,8 @@
 *
 *                 Compute L(J,J) and test for non-positive-definiteness.
 *
-                  AJJ = DBLE( A( IDIAG ) ) -
-     $                  ZDOTC( J-JA, A( IOFFA ), LDA, A( IOFFA ), LDA )
+                  CALL ZDOTC2(J-JA, A(IOFFA), LDA, A(IOFFA), LDA, TEMP)
+                  AJJ = DBLE( A( IDIAG ) ) - TEMP
                   IF ( AJJ.LE.ZERO ) THEN
                      A( IDIAG ) = AJJ
                      INFO = J - JA + 1

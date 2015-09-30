@@ -385,13 +385,12 @@
      $                   CAXPY, CGEMM, CGERV2D, CGESD2D, CLAMOV,
      $                   CLATCPY, CPBTRF, CPOTRF, CSYRK, CTBTRS, CTRMM,
      $                   CTRRV2D, CTRSD2D, CTRSM, CTRTRS, DESC_CONVERT,
-     $                   GLOBCHK, PXERBLA, RESHAPE
+     $                   GLOBCHK, PXERBLA, RESHAPE, CDOTC2
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
       INTEGER            NUMROC
-      COMPLEX            CDOTC
-      EXTERNAL           CDOTC, LSAME, NUMROC
+      EXTERNAL           LSAME, NUMROC
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ICHAR, MIN, MOD
@@ -741,8 +740,8 @@
 *
 *         Calculate the update block for previous proc, E_i = GL_i{GU_i}
 *
-          AF( ODD_SIZE+3 ) = -CONE *
-     $        CDOTC( ODD_SIZE, AF( 1 ), 1, AF( WORK_U+1 ), 1 )
+          CALL CDOTC2(ODD_SIZE, AF(1), 1, AF(WORK_U+1), 1, TEMP)
+          AF( ODD_SIZE+3 ) = -CONE * TEMP
 *
 *
 *         Initiate send of E_i to previous processor to overlap

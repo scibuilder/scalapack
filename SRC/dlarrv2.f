@@ -276,8 +276,8 @@
 *     ..
 *     .. External Functions ..
       DOUBLE PRECISION  DLAMCH
-      DOUBLE PRECISION   DDOT, DNRM2
-      EXTERNAL           DDOT, DLAMCH, DNRM2
+      DOUBLE PRECISION   DNRM2
+      EXTERNAL           DLAMCH, DNRM2
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           DAXPY, DCOPY, DLAR1VA, DLARRB2,

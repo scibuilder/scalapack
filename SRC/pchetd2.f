@@ -233,12 +233,11 @@
 *     .. External Subroutines ..
       EXTERNAL           BLACS_ABORT, BLACS_GRIDINFO, CAXPY, CGEBR2D,
      $                   CGEBS2D, CHK1MAT, CHEMV,
-     $                   CHER2, CLARFG, INFOG2L, PXERBLA
+     $                   CHER2, CLARFG, INFOG2L, PXERBLA, CDOTC2
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
-      COMPLEX            CDOTC
-      EXTERNAL           LSAME, CDOTC
+      EXTERNAL           LSAME
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          CMPLX, REAL
@@ -333,8 +332,8 @@
 *
 *                    Compute  w := x - 1/2 * tau * (x'*v) * v
 *
-                     ALPHA = -HALF*TAUI*CDOTC( J, TAU( JJ ), 1,
-     $                                         A( II+JK*LDA ), 1 )
+                     CALL CDOTC2(J, TAU(JJ), 1, A(II+JK*LDA), 1, ALPHA)
+                     ALPHA = -HALF*TAUI*ALPHA
                      CALL CAXPY( J, ALPHA, A( II+JK*LDA ), 1,
      $                           TAU( JJ ), 1 )
 *
@@ -413,8 +412,9 @@
 *
 *                    Compute  w := x - 1/2 * tau * (x'*v) * v
 *
-                     ALPHA = -HALF*TAUI*CDOTC( N-J, TAU( JK ), 1,
-     $                        A( IK+1+(JK-1)*LDA ), 1 )
+                     CALL CDOTC2(N-J, TAU(JK), 1, A(IK+1+(JK-1)*LDA), 1,
+     $                  ALPHA)
+                     ALPHA = -HALF*TAUI*ALPHA
                      CALL CAXPY( N-J, ALPHA, A( IK+1+(JK-1)*LDA ),
      $                           1, TAU( JK ), 1 )
 *

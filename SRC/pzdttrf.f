@@ -385,13 +385,12 @@
      $                   DESC_CONVERT, GLOBCHK, PXERBLA, RESHAPE, ZAXPY,
      $                   ZGEMM, ZGERV2D, ZGESD2D, ZLAMOV, ZLATCPY,
      $                   ZPBTRF, ZPOTRF, ZSYRK, ZTBTRS, ZTRMM, ZTRRV2D,
-     $                   ZTRSD2D, ZTRSM, ZTRTRS
+     $                   ZTRSD2D, ZTRSM, ZTRTRS, ZDOTC2
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
       INTEGER            NUMROC
-      COMPLEX*16         ZDOTC
-      EXTERNAL           LSAME, NUMROC, ZDOTC
+      EXTERNAL           LSAME, NUMROC
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ICHAR, MIN, MOD
@@ -741,8 +740,8 @@
 *
 *         Calculate the update block for previous proc, E_i = GL_i{GU_i}
 *
-          AF( ODD_SIZE+3 ) = -CONE *
-     $        ZDOTC( ODD_SIZE, AF( 1 ), 1, AF( WORK_U+1 ), 1 )
+          CALL ZDOTC2(ODD_SIZE, AF(1), 1, AF(WORK_U+1), 1, TEMP)
+          AF( ODD_SIZE+3 ) = -CONE * TEMP
 *
 *
 *         Initiate send of E_i to previous processor to overlap

@@ -121,19 +121,19 @@
      $                   INDRV2, INDRV3, INDRV4, INDRV5, ITS, J, J1,
      $                   JBLK, JMAX, NBLK, NRMCHK
       DOUBLE PRECISION   EPS, EPS1, NRM, ONENRM, ORTOL, PERTOL, SCL,
-     $                   SEP, STPCRT, TOL, XJ, XJM, ZTR
+     $                   SEP, STPCRT, TOL, XJ, XJM, ZTR, TEMP
 *     ..
 *     .. Local Arrays ..
       INTEGER            ISEED( 4 )
 *     ..
 *     .. External Functions ..
       INTEGER            IDAMAX
-      DOUBLE PRECISION   DASUM, DDOT, DLAMCH, DNRM2
-      EXTERNAL           IDAMAX, DASUM, DDOT, DLAMCH, DNRM2
+      DOUBLE PRECISION   DASUM, DLAMCH, DNRM2
+      EXTERNAL           IDAMAX, DASUM, DLAMCH, DNRM2
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           DAXPY, DCOPY, DLAGTF, DLAGTS, DLARNV, DSCAL,
-     $                   XERBLA
+     $                   XERBLA, DDOT2
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ABS, MAX, SQRT
@@ -312,8 +312,9 @@
 *
             IF( GPIND.NE.J ) THEN
                DO 80 I = GPIND, J - 1
-                  ZTR = -DDOT( BLKSIZ, WORK( INDRV1+1 ), 1, Z( B1, I ),
-     $                  1 )
+                  CALL DDOT2(BLKSIZ, WORK(INDRV1+1), 1, Z(B1,I), 1,
+     $               TEMP)
+                  ZTR = -TEMP
                   CALL DAXPY( BLKSIZ, ZTR, Z( B1, I ), 1,
      $                        WORK( INDRV1+1 ), 1 )
    80          CONTINUE

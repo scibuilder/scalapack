@@ -276,8 +276,8 @@
 *     ..
 *     .. External Functions ..
       REAL              SLAMCH
-      REAL               SDOT, SNRM2
-      EXTERNAL           SDOT, SLAMCH, SNRM2
+      REAL               SNRM2
+      EXTERNAL           SLAMCH, SNRM2
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           SAXPY, SCOPY, SLAR1VA, SLARRB2,

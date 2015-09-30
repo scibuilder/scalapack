@@ -121,19 +121,19 @@
      $                   INDRV2, INDRV3, INDRV4, INDRV5, ITS, J, J1,
      $                   JBLK, JMAX, NBLK, NRMCHK
       REAL               EPS, EPS1, NRM, ONENRM, ORTOL, PERTOL, SCL,
-     $                   SEP, STPCRT, TOL, XJ, XJM, ZTR
+     $                   SEP, STPCRT, TOL, XJ, XJM, ZTR, TEMP
 *     ..
 *     .. Local Arrays ..
       INTEGER            ISEED( 4 )
 *     ..
 *     .. External Functions ..
       INTEGER            ISAMAX
-      REAL               SASUM, SDOT, SLAMCH, SNRM2
-      EXTERNAL           ISAMAX, SASUM, SDOT, SLAMCH, SNRM2
+      REAL               SASUM, SLAMCH, SNRM2
+      EXTERNAL           ISAMAX, SASUM, SLAMCH, SNRM2
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           SAXPY, SCOPY, SLAGTF, SLAGTS, SLARNV, SSCAL,
-     $                   XERBLA
+     $                   XERBLA, SDOT2
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ABS, MAX, SQRT
@@ -312,8 +312,9 @@
 *
             IF( GPIND.NE.J ) THEN
                DO 80 I = GPIND, J - 1
-                  ZTR = -SDOT( BLKSIZ, WORK( INDRV1+1 ), 1, Z( B1, I ),
-     $                  1 )
+                  CALL SDOT2(BLKSIZ, WORK(INDRV1+1), 1, Z(B1,I), 1,
+     $               TEMP)
+                  ZTR = -TEMP
                   CALL SAXPY( BLKSIZ, ZTR, Z( B1, I ), 1,
      $                        WORK( INDRV1+1 ), 1 )
    80          CONTINUE

@@ -131,15 +131,15 @@
       INTEGER            IACOL, IAROW, ICURR, IDIAG, IIA, IOFFA, JJA,
      $                   LDA, MYCOL, MYROW, NA, NPCOL, NPROW
       REAL               AII
+      COMPLEX            TEMP
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_GRIDINFO, CGEMV, CLACGV,
-     $                   CSSCAL, INFOG2L
+     $                   CSSCAL, INFOG2L, CDOTC2
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
-      COMPLEX            CDOTC
-      EXTERNAL           CDOTC, LSAME
+      EXTERNAL           LSAME
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          CMPLX, REAL
@@ -170,8 +170,8 @@
             DO 10 NA = N-1, 1, -1
                AII = A( IDIAG )
                ICURR = IDIAG + LDA
-               A( IDIAG ) = AII*AII + REAL( CDOTC( NA, A( ICURR ), LDA,
-     $                                           A( ICURR ), LDA ) )
+               CALL CDOTC2(NA, A(ICURR), LDA, A(ICURR), LDA, TEMP)
+               A( IDIAG ) = AII*AII + REAL( TEMP )
                CALL CLACGV( NA, A( ICURR ), LDA )
                CALL CGEMV( 'No transpose', N-NA-1, NA, ONE,
      $                     A( IOFFA+LDA ), LDA, A( ICURR ), LDA,
@@ -190,8 +190,8 @@
             DO 20 NA = 1, N-1
                AII = A( IDIAG )
                ICURR = IDIAG + 1
-               A(IDIAG) = AII*AII + REAL( CDOTC( N-NA, A( ICURR ), 1,
-     $                                           A( ICURR ), 1 ) )
+               CALL CDOTC2(N-NA, A(ICURR), 1, A(ICURR), 1, TEMP)
+               A( IDIAG ) = AII*AII + REAL( TEMP )
                CALL CLACGV( NA-1, A( IOFFA ), LDA )
                CALL CGEMV( 'Conjugate transpose', N-NA, NA-1, ONE,
      $                     A( IOFFA+1 ), LDA, A( ICURR ), 1,

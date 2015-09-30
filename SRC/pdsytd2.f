@@ -225,17 +225,16 @@
       INTEGER            IACOL, IAROW, ICOFFA, ICTXT, II, IK, IROFFA, J,
      $                   JJ, JK, JN, LDA, LWMIN, MYCOL, MYROW, NPCOL,
      $                   NPROW
-      DOUBLE PRECISION   ALPHA, TAUI
+      DOUBLE PRECISION   ALPHA, TAUI, TEMP
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_ABORT, BLACS_GRIDINFO, CHK1MAT, DAXPY,
      $                   DGEBR2D, DGEBS2D, DLARFG,
-     $                   DSYMV, DSYR2, INFOG2L, PXERBLA
+     $                   DSYMV, DSYR2, INFOG2L, PXERBLA, DDOT2
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
-      DOUBLE PRECISION   DDOT
-      EXTERNAL           LSAME, DDOT
+      EXTERNAL           LSAME
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          DBLE
@@ -328,8 +327,8 @@
 *
 *                    Compute  w := x - 1/2 * tau * (x'*v) * v
 *
-                     ALPHA = -HALF*TAUI*DDOT( J, TAU( JJ ), 1,
-     $                                        A( II+JK*LDA ), 1 )
+                     CALL DDOT2(J, TAU(JJ), 1, A(II+JK*LDA), 1, TEMP)
+                     ALPHA = -HALF*TAUI*TEMP
                      CALL DAXPY( J, ALPHA, A( II+JK*LDA ), 1,
      $                           TAU( JJ ), 1 )
 *
@@ -406,8 +405,9 @@
 *
 *                    Compute  w := x - 1/2 * tau * (x'*v) * v
 *
-                     ALPHA = -HALF*TAUI*DDOT( N-J, TAU( JK ), 1,
-     $                        A( IK+1+(JK-1)*LDA ), 1 )
+                     CALL DDOT2(N-J, TAU(JK), 1, A(IK+1+(JK-1)*LDA), 1,
+     $                  TEMP)
+                     ALPHA = -HALF*TAUI*TEMP
                      CALL DAXPY( N-J, ALPHA, A( IK+1+(JK-1)*LDA ),
      $                           1, TAU( JK ), 1 )
 *

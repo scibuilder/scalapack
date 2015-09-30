@@ -376,17 +376,17 @@
 *     ..
 *     .. Local Arrays ..
       INTEGER            DESCA_1XP( 7 ), PARAM_CHECK( 7, 3 )
+      REAL               DOT_TEMP
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_GRIDEXIT, BLACS_GRIDINFO, DESC_CONVERT,
      $                   GLOBCHK, IGAMX2D, IGEBR2D, IGEBS2D, PXERBLA,
      $                   RESHAPE, SDTTRF, SDTTRSV, SGERV2D, SGESD2D,
-     $                   STRRV2D, STRSD2D
+     $                   STRRV2D, STRSD2D, SDOT2
 *     ..
 *     .. External Functions ..
       INTEGER            NUMROC
-      REAL               SDOT
-      EXTERNAL           NUMROC, SDOT
+      EXTERNAL           NUMROC
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MOD, REAL
@@ -727,8 +727,8 @@
 *
 *         Calculate the update block for previous proc, E_i = GL_i{GU_i}
 *
-            AF( ODD_SIZE+3 ) = -ONE*SDOT( ODD_SIZE, AF( 1 ), 1,
-     $                         AF( WORK_U+1 ), 1 )
+            CALL SDOT2(ODD_SIZE, AF(1), 1, AF(WORK_U+1), 1, DOT_TEMP)
+            AF(ODD_SIZE+3) = -ONE*DOT_TEMP
 *
 *
 *         Initiate send of E_i to previous processor to overlap

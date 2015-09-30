@@ -233,12 +233,11 @@
 *     .. External Subroutines ..
       EXTERNAL           BLACS_ABORT, BLACS_GRIDINFO, CHK1MAT, INFOG2L,
      $                   PXERBLA, ZAXPY, ZGEBR2D, ZGEBS2D,
-     $                   ZHEMV, ZHER2, ZLARFG
+     $                   ZHEMV, ZHER2, ZLARFG, ZDOTC2
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
-      COMPLEX*16         ZDOTC
-      EXTERNAL           LSAME, ZDOTC
+      EXTERNAL           LSAME
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          DBLE, DCMPLX
@@ -333,8 +332,8 @@
 *
 *                    Compute  w := x - 1/2 * tau * (x'*v) * v
 *
-                     ALPHA = -HALF*TAUI*ZDOTC( J, TAU( JJ ), 1,
-     $                                         A( II+JK*LDA ), 1 )
+                     CALL ZDOTC2( J, TAU(JJ), 1, A(II+JK*LDA), 1, ALPHA)
+                     ALPHA = -HALF*TAUI*ALPHA
                      CALL ZAXPY( J, ALPHA, A( II+JK*LDA ), 1,
      $                           TAU( JJ ), 1 )
 *
@@ -413,8 +412,9 @@
 *
 *                    Compute  w := x - 1/2 * tau * (x'*v) * v
 *
-                     ALPHA = -HALF*TAUI*ZDOTC( N-J, TAU( JK ), 1,
-     $                        A( IK+1+(JK-1)*LDA ), 1 )
+                     CALL ZDOTC2(N-J, TAU(JK), 1, A(IK+1+(JK-1)*LDA), 1,
+     $                 ALPHA)
+                     ALPHA = -HALF*TAUI*ALPHA
                      CALL ZAXPY( N-J, ALPHA, A( IK+1+(JK-1)*LDA ),
      $                           1, TAU( JK ), 1 )
 *

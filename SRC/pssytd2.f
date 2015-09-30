@@ -225,17 +225,16 @@
       INTEGER            IACOL, IAROW, ICOFFA, ICTXT, II, IK, IROFFA, J,
      $                   JJ, JK, JN, LDA, LWMIN, MYCOL, MYROW, NPCOL,
      $                   NPROW
-      REAL               ALPHA, TAUI
+      REAL               ALPHA, TAUI, TEMP
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_ABORT, BLACS_GRIDINFO, CHK1MAT, INFOG2L,
      $                   PXERBLA, SAXPY, SGEBR2D, SGEBS2D,
-     $                   SLARFG, SSYMV, SSYR2
+     $                   SLARFG, SSYMV, SSYR2, SDOT2
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
-      REAL               SDOT
-      EXTERNAL           LSAME, SDOT
+      EXTERNAL           LSAME
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          REAL
@@ -328,8 +327,8 @@
 *
 *                    Compute  w := x - 1/2 * tau * (x'*v) * v
 *
-                     ALPHA = -HALF*TAUI*SDOT( J, TAU( JJ ), 1,
-     $                                        A( II+JK*LDA ), 1 )
+                     CALL SDOT2(J, TAU(JJ), 1, A(II+JK*LDA), 1, TEMP)
+                     ALPHA = -HALF*TAUI*TEMP
                      CALL SAXPY( J, ALPHA, A( II+JK*LDA ), 1,
      $                           TAU( JJ ), 1 )
 *
@@ -406,8 +405,9 @@
 *
 *                    Compute  w := x - 1/2 * tau * (x'*v) * v
 *
-                     ALPHA = -HALF*TAUI*SDOT( N-J, TAU( JK ), 1,
-     $                        A( IK+1+(JK-1)*LDA ), 1 )
+                     CALL SDOT2(N-J, TAU(JK), 1, A(IK+1+(JK-1)*LDA), 1,
+     $                  TEMP)
+                     ALPHA = -HALF*TAUI*TEMP
                      CALL SAXPY( N-J, ALPHA, A( IK+1+(JK-1)*LDA ),
      $                           1, TAU( JK ), 1 )
 *

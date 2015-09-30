@@ -151,20 +151,20 @@
       INTEGER            IACOL, IAROW, ICOFF, ICTXT, ICURR, IDIAG, IIA,
      $                   IOFFA, IROFF, J, JJA, LDA, MYCOL, MYROW,
      $                   NPCOL, NPROW
+      COMPLEX            TEMP
       REAL               AJJ
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_ABORT, BLACS_GRIDINFO, CHK1MAT, CGEMV,
      $                   CLACGV, CSSCAL, IGEBR2D, IGEBS2D,
-     $                   INFOG2L, PB_TOPGET, PXERBLA
+     $                   INFOG2L, PB_TOPGET, PXERBLA, CDOTC2
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MOD, REAL, SQRT
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
-      COMPLEX            CDOTC
-      EXTERNAL           LSAME, CDOTC
+      EXTERNAL           LSAME
 *     ..
 *     .. Executable Statements ..
 *
@@ -233,8 +233,8 @@
 *
 *                 Compute U(J,J) and test for non-positive-definiteness.
 *
-                  AJJ = REAL( A( IDIAG ) ) -
-     $                  CDOTC( J-JA, A( IOFFA ), 1, A( IOFFA ), 1 )
+                  CALL CDOTC2(J-JA, A(IOFFA), 1, A(IOFFA), 1, TEMP)
+                  AJJ = REAL( A( IDIAG ) ) - TEMP
                   IF( AJJ.LE.ZERO ) THEN
                      A( IDIAG ) = AJJ
                      INFO = J - JA + 1
@@ -299,8 +299,8 @@
 *
 *                 Compute L(J,J) and test for non-positive-definiteness.
 *
-                  AJJ = REAL( A( IDIAG ) ) -
-     $                  CDOTC( J-JA, A( IOFFA ), LDA, A( IOFFA ), LDA )
+                  CALL CDOTC2(J-JA, A(IOFFA), LDA, A(IOFFA), LDA, TEMP)
+                  AJJ = REAL( A( IDIAG ) ) - TEMP
                   IF ( AJJ.LE.ZERO ) THEN
                      A( IDIAG ) = AJJ
                      INFO = J - JA + 1

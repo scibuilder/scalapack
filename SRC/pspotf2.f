@@ -149,20 +149,19 @@
       INTEGER            IACOL, IAROW, ICOFF, ICTXT, ICURR, IDIAG, IIA,
      $                   IOFFA, IROFF, J, JJA, LDA, MYCOL, MYROW,
      $                   NPCOL, NPROW
-      REAL               AJJ
+      REAL               AJJ, TEMP
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_ABORT, BLACS_GRIDINFO, CHK1MAT, IGEBR2D,
      $                   IGEBS2D, INFOG2L, PB_TOPGET, PXERBLA, SGEMV,
-     $                   SSCAL
+     $                   SSCAL, SDOT2
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MOD, SQRT
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
-      REAL               SDOT
-      EXTERNAL           LSAME, SDOT
+      EXTERNAL           LSAME
 *     ..
 *     .. Executable Statements ..
 *
@@ -231,8 +230,8 @@
 *
 *                 Compute U(J,J) and test for non-positive-definiteness.
 *
-                  AJJ = A( IDIAG ) -
-     $                  SDOT( J-JA, A( IOFFA ), 1, A( IOFFA ), 1 )
+                  CALL SDOT2(J-JA, A(IOFFA), 1, A(IOFFA), 1, TEMP)
+                  AJJ = A(IDIAG) - TEMP
                   IF( AJJ.LE.ZERO ) THEN
                      A( IDIAG ) = AJJ
                      INFO = J - JA + 1
@@ -294,9 +293,9 @@
 *
 *                 Compute L(J,J) and test for non-positive-definiteness.
 *
-                  AJJ = A( IDIAG ) -
-     $                  SDOT( J-JA, A( IOFFA ), LDA, A( IOFFA ), LDA )
-                  IF ( AJJ.LE.ZERO ) THEN
+                  CALL SDOT2(J-JA, A(IOFFA), LDA, A(IOFFA), LDA, TEMP)
+                  AJJ = A(IDIAG) - TEMP
+                  IF( AJJ.LE.ZERO ) THEN
                      A( IDIAG ) = AJJ
                      INFO = J - JA + 1
                      GO TO 40

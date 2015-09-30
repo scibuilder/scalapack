@@ -421,8 +421,7 @@
 *     .. External Functions ..
       LOGICAL            LSAME
       INTEGER            NUMROC
-      COMPLEX*16         ZDOTC
-      EXTERNAL           LSAME, NUMROC, ZDOTC
+      EXTERNAL           LSAME, NUMROC
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          ICHAR, MIN, MOD

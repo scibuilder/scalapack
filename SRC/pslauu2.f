@@ -130,15 +130,14 @@
 *     .. Local Scalars ..
       INTEGER            IACOL, IAROW, ICURR, IDIAG, IIA, IOFFA, JJA,
      $                   LDA, MYCOL, MYROW, NA, NPCOL, NPROW
-      REAL               AII
+      REAL               AII, TEMP
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           BLACS_GRIDINFO, INFOG2L, SGEMV, SSCAL
+      EXTERNAL           BLACS_GRIDINFO, INFOG2L, SGEMV, SSCAL, SDOT2
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
-      REAL               SDOT
-      EXTERNAL           LSAME, SDOT
+      EXTERNAL           LSAME
 *     ..
 *     .. Executable Statements ..
 *
@@ -166,8 +165,8 @@
             DO 10 NA = N-1, 1, -1
                AII = A( IDIAG )
                ICURR = IDIAG + LDA
-               A( IDIAG ) = AII*AII + SDOT( NA, A( ICURR ), LDA,
-     $                                    A( ICURR ), LDA )
+               CALL SDOT2(NA, A(ICURR), LDA, A(ICURR), LDA, TEMP)
+               A(IDIAG) = AII*AII + TEMP
                CALL SGEMV( 'No transpose', N-NA-1, NA, ONE,
      $                     A( IOFFA+LDA ), LDA, A( ICURR ), LDA, AII,
      $                     A( IOFFA ), 1 )
@@ -184,8 +183,8 @@
             DO 20 NA = 1, N-1
                AII = A( IDIAG )
                ICURR = IDIAG + 1
-               A(IDIAG) = AII*AII + SDOT( N-NA, A( ICURR ), 1,
-     $                                    A( ICURR ), 1 )
+               CALL SDOT2(N-NA, A(ICURR), 1, A(ICURR), 1, TEMP)
+               A(IDIAG) = AII*AII + TEMP
                CALL SGEMV( 'Transpose', N-NA, NA-1, ONE, A( IOFFA+1 ),
      $                     LDA, A( ICURR ), 1, AII, A( IOFFA ), LDA )
                IDIAG = IDIAG + LDA + 1
