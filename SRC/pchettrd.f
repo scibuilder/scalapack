@@ -444,7 +444,7 @@
       EXTERNAL           BLACS_GRIDINFO, CGEBR2D, CGEBS2D, CGEMM, CGEMV,
      $                   CGERV2D, CGESD2D, CGSUM2D, CHK1MAT, CLAMOV,
      $                   CSCAL, CTRMVT, PCHK1MAT, PSTREECOMB, PXERBLA,
-     $                   SCOMBNRM2, SGEBR2D, SGEBS2D, SGSUM2D
+     $                   SCOMBNRM2, SGEBR2D, SGEBS2D, SGSUM2D, SCNRM22
 *     ..
 *     .. External Functions ..
 *
@@ -455,7 +455,7 @@
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          AIMAG, CMPLX, CONJG, ICHAR, MAX, MIN, MOD,
-     $                   REAL, SIGN, SQRT, SCNRM22
+     $                   REAL, SIGN, SQRT
 *     ..
 *
 *
