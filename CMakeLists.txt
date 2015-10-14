@@ -7,6 +7,7 @@ include(CheckFortranFunctionExists)
 include(ElCheckFunctionExists)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(TEST_SCALAPACK "Test ScaLAPACK install?" ON)
 
 # Configure the warning and code coverage suppression file
 configure_file( 
@@ -47,11 +48,13 @@ endmacro()
 
 # --------------------------------------------------
 # Testing
-SET(DART_TESTING_TIMEOUT 600)
+if(TEST_SCALAPACK)
+  SET(DART_TESTING_TIMEOUT 600)
 
-enable_testing()
-include(CTest)
-enable_testing()
+  enable_testing()
+  include(CTest)
+  enable_testing()
+endif()
 # --------------------------------------------------
 
 # Organize output files.  On Windows this also keeps .dll files next
@@ -312,7 +315,9 @@ else() # Need to separate Fortran and C Code
   scalapack_install_library(scalapack)
   scalapack_install_library(scalapack-F)
 endif()
-add_subdirectory(TESTING)
+if(TEST_SCALAPACK)
+  add_subdirectory(TESTING)
+endif()
 
 # --------------------------------------------------
 # CPACK Packaging 
