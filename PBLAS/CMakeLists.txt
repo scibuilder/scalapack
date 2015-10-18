@@ -1,3 +1,5 @@
 add_subdirectory(SRC)
-add_subdirectory(TESTING)
+if(TEST_SCALAPACK)
+  add_subdirectory(TESTING)
+endif()
 add_subdirectory(TIMING)
