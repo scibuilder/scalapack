@@ -50,7 +50,7 @@ if(USE_FOUND_BLIS_LAPACK)
   set(HAVE_BLIS_LAPACK TRUE)
 else()
   if(NOT DEFINED LAPACK_URL)
-    set(LAPACK_URL https://github.com/poulson/lapack)
+    set(LAPACK_URL https://github.com/scibuilder/lapack)
   endif()
   message(STATUS "Will download LAPACK from ${LAPACK_URL}")
 
